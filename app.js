@@ -10,6 +10,8 @@ const Race = require('./models/race')
 const Result = require('./models/result')
 const mongoose = require('mongoose')
 require('dotenv').config({silent: true})
+// CONNECT TO DB
+mongoose.connect(process.env.MONGODB_URI)
 // const api = require('./api')
 
 
@@ -17,6 +19,12 @@ require('dotenv').config({silent: true})
 const router = require('./config/routes')
 app.use('/', router)
 
+// Allow cross-domain Ajax requests
+router.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  next()
+})
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -121,8 +129,7 @@ app.listen(port, () => {
       })
     res.status(200).json({message: 'success'})
   })
-// CONNECT TO DB
-mongoose.connect(process.env.MONGODB_URI)
+
 
 // request(options, function (error, response, body) {
 //   var chicken = JSON.parse(body)
