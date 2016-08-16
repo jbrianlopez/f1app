@@ -32,19 +32,20 @@ app.use('/', router)
 //   next()
 // })
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, User-Email, Auth-Token')
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
+  next()
+})
 
-app.get('/', function(req, res, next) {
-  // Handle the get for this route
-});
+// app.get('/', function(req, res, next) {
+//   // Handle the get for this route
+// });
 
-app.post('/', function(req, res, next) {
- // Handle the post for this route
-});
+// app.post('/', function(req, res, next) {
+//  // Handle the post for this route
+// });
 
 app.set('views', './views')
 app.set('view engine', 'ejs')
@@ -80,8 +81,8 @@ app.listen(port, () => {
 
 
   app.get('/boo', (req, res, next) => {
-    var drivers = ['alonso', 'bottas', 'button', 'ericsson', 'grosjean', 'gutierrez', 'hamilton', 'haryanto', 'hulkenberg', 'kvyat', 'kevin_magnussen', 'massa', 'nasr', 'jolyon_palmer', 'perez', 'raikkonen', 'ricciardo', 'rosberg', 'sainz', 'vandoorn', 'max_verstappen', 'vettel', 'wehrlein']
-
+    var drivers = ['alonso', 'bottas', 'button', 'ericsson', 'grosjean', 'gutierrez', 'hamilton', 'haryanto', 'hulkenberg', 'kvyat', 'kevin_magnussen', 'massa', 'nasr', 'jolyon_palmer', 'perez', 'raikkonen', 'ricciardo', 'rosberg', 'sainz', 'max_verstappen', 'vettel', 'wehrlein']
+    //
     // var drivers = ['haryanto', 'nasr']
     drivers.forEach((element) => {
         // console.log(element)
@@ -105,17 +106,18 @@ app.listen(port, () => {
           // Races iterates up, results does not
           // driver.given_name = response.MRData.RaceTable.Races[0].Results[0].Driver.givenName
           // console.log(driver.givenName)
+          let driver = new Driver()
+          driver.given_name = response.MRData.RaceTable.Races[0].Results[0].Driver.givenName
+          driver.family_name = response.MRData.RaceTable.Races[0].Results[0].Driver.familyName
+          driver.date_of_birth = response.MRData.RaceTable.Races[0].Results[0].Driver.date_of_birth
+          // driverId.push(race.driverId)
+          driver.driverId = response.MRData.RaceTable.Races[0].Results[0].Driver.driverId
+          // nationality.push(race.nationality)
+          driver.nationality = response.MRData.RaceTable.Races[0].Results[0].Driver.nationality
+
           response.MRData.RaceTable.Races.forEach((races) => {
-            let driver = new Driver()
             let myrace = new Race()
             let result = new Result()
-            driver.given_name = races.Results[0].Driver.givenName
-            driver.family_name = races.Results[0].Driver.familyName
-            driver.date_of_birth = races.Results[0].Driver.date_of_birth
-            // driverId.push(race.driverId)
-            driver.driverId = races.Results[0].Driver.driverId
-            // nationality.push(race.nationality)
-            driver.nationality = races.Results[0].Driver.nationality
             // TESTING for Race model
             myrace.Round = races.round
             myrace.Season = races.season
@@ -132,12 +134,10 @@ app.listen(port, () => {
             result.status = races.Results[0].status
             myrace.results.push(result)
             driver.races.push(myrace)
-            driver.save()
             // result.save()
             // myrace.save()
-
-
           })
+          driver.save()
         // do something with body
         })
       })
