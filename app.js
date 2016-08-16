@@ -50,9 +50,7 @@ app.use(function (req, res, next) {
 app.set('views', './views')
 app.set('view engine', 'ejs')
 
-app.listen(port, () => {
-  console.log(`listening on port ${port}`)
-})
+
 
 // var options = {
 //   url: `http://ergast.com/api/f1/drivers/${req.params.racerName}/results.json?limit=270`,
@@ -186,4 +184,7 @@ app.use((err, req, res, next) => {
   })
 })
 
+app.listen(port, () => {
+  console.log(`listening on port ${port}`)
+})
 module.exports = app
