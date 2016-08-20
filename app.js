@@ -37,7 +37,6 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, User-Email, Auth-Token')
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
   next()
-  response.addHeader('Access-Control-Allow-Origin', '*');
 })
 
 // app.get('/', function(req, res, next) {
